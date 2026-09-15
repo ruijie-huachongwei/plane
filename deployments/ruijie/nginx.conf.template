@@ -14,6 +14,13 @@ server {
     listen 443 ssl;
     server_name ${APP_DOMAIN};
 
+    resolver 127.0.0.11 valid=10s ipv6=off;
+    set $space_upstream space:3000;
+    set $admin_upstream admin:3000;
+    set $live_upstream live:3000;
+    set $api_upstream api:8000;
+    set $web_upstream web:3000;
+
     ssl_certificate /etc/nginx/certs/fullchain.pem;
     ssl_certificate_key /etc/nginx/certs/privkey.pem;
     ssl_protocols TLSv1.2 TLSv1.3;
@@ -33,7 +40,7 @@ server {
     }
 
     location ^~ /spaces/ {
-        proxy_pass http://space:3000;
+        proxy_pass http://$space_upstream$request_uri;
     }
 
     location = /god-mode {
@@ -41,7 +48,7 @@ server {
     }
 
     location ^~ /god-mode/ {
-        proxy_pass http://admin:3000;
+        proxy_pass http://$admin_upstream$request_uri;
     }
 
     location = /live {
@@ -49,7 +56,7 @@ server {
         proxy_set_header Connection $connection_upgrade;
         proxy_read_timeout 3600s;
         proxy_send_timeout 3600s;
-        proxy_pass http://live:3000;
+        proxy_pass http://$live_upstream$request_uri;
     }
 
     location ^~ /live/ {
@@ -57,14 +64,14 @@ server {
         proxy_set_header Connection $connection_upgrade;
         proxy_read_timeout 3600s;
         proxy_send_timeout 3600s;
-        proxy_pass http://live:3000;
+        proxy_pass http://$live_upstream$request_uri;
     }
 
     location ~ ^/(api|auth|static)(/|$) {
-        proxy_pass http://api:8000;
+        proxy_pass http://$api_upstream$request_uri;
     }
 
     location / {
-        proxy_pass http://web:3000;
+        proxy_pass http://$web_upstream$request_uri;
     }
 }
