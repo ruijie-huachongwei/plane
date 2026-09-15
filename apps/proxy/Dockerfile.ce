@@ -1,16 +1,19 @@
 FROM caddy:2.11.4-builder-alpine AS caddy-builder
 
-ARG GOPROXY=https://repo.huaweicloud.com/repository/goproxy|https://proxy.golang.org|direct
+ARG GOPROXY=https://repo.huaweicloud.com/repository/goproxy|https://proxy.golang.com.cn
 ARG GOSUMDB=sum.golang.org
 ENV GOPROXY=$GOPROXY
 ENV GOSUMDB=$GOSUMDB
+ENV GONOPROXY=none
+ENV GOPRIVATE=
 
 # grpc and otel move together: grpc >= v1.83.0 requires otel v1.44.0, and xcaddy
 # resolves these --with pins in one `go get`, so a stale otel pin makes go walk
 # grpc backwards until it finds one that fits (silently, with a zero exit) --
 # it lands on the v1.83.0-dev pre-release and the build still succeeds. Bump the
 # otel pair in lockstep with grpc, and confirm with `go version -m` afterwards.
-RUN XCADDY_SKIP_CLEANUP=1 xcaddy build \
+RUN go env GOPROXY GONOPROXY GOPRIVATE GOSUMDB && \
+    XCADDY_SKIP_CLEANUP=1 xcaddy build \
         --with github.com/caddy-dns/cloudflare@v0.2.1 \
         --with github.com/caddy-dns/digitalocean@04bde2867106aa1b44c2f9da41a285fa02e629c5 \
         --with github.com/mholt/caddy-l4@6faae83b167fda94e62b686be5cbeb9b3f8fe002 \

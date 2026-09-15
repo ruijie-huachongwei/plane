@@ -82,12 +82,15 @@ RUN pnpm turbo run build --filter=web
 # *****************************************************************************
 FROM caddy:2.11.4-builder-alpine AS caddy-builder
 
-ARG GOPROXY=https://repo.huaweicloud.com/repository/goproxy|https://proxy.golang.org|direct
+ARG GOPROXY=https://repo.huaweicloud.com/repository/goproxy|https://proxy.golang.com.cn
 ARG GOSUMDB=sum.golang.org
 ENV GOPROXY=$GOPROXY
 ENV GOSUMDB=$GOSUMDB
+ENV GONOPROXY=none
+ENV GOPRIVATE=
 
-RUN XCADDY_SKIP_CLEANUP=1 xcaddy build \
+RUN go env GOPROXY GONOPROXY GOPRIVATE GOSUMDB && \
+    XCADDY_SKIP_CLEANUP=1 xcaddy build \
     --with github.com/mholt/caddy-ratelimit
 
 # Caddy's own go.mod pins x/crypto, x/net and x/text at versions with open CVEs
