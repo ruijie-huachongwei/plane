@@ -1,0 +1,42 @@
+{
+	servers {
+		max_header_size 25MB
+	}
+}
+
+(plane_routes) {
+	request_body {
+		max_size {$FILE_SIZE_LIMIT}
+	}
+
+	route {
+		redir /spaces /spaces/ permanent
+		reverse_proxy /spaces/* space:3000
+
+		redir /god-mode /god-mode/ permanent
+		reverse_proxy /god-mode/* admin:3000
+
+		@live path /live /live/*
+		reverse_proxy @live live:3000
+
+		@api path /api /api/*
+		reverse_proxy @api api:8000
+
+		@auth path /auth /auth/*
+		reverse_proxy @auth api:8000
+
+		@static path /static /static/*
+		reverse_proxy @static api:8000
+
+		reverse_proxy web:3000
+	}
+}
+
+http://{$APP_DOMAIN} {
+	redir https://{$APP_DOMAIN}{uri} permanent
+}
+
+https://{$APP_DOMAIN} {
+	tls /etc/caddy/certs/fullchain.pem /etc/caddy/certs/privkey.pem
+	import plane_routes
+}

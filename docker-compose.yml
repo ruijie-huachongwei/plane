@@ -44,7 +44,7 @@ services:
     restart: always
     command: ./bin/docker-entrypoint-api.sh
     env_file:
-      - ./apps/api/.env
+      - ${API_ENV_FILE:-./apps/api/.env}
     depends_on:
       - plane-db
       - plane-redis
@@ -59,7 +59,7 @@ services:
     restart: always
     command: ./bin/docker-entrypoint-worker.sh
     env_file:
-      - ./apps/api/.env
+      - ${API_ENV_FILE:-./apps/api/.env}
     depends_on:
       - api
       - plane-db
@@ -75,7 +75,7 @@ services:
     restart: always
     command: ./bin/docker-entrypoint-beat.sh
     env_file:
-      - ./apps/api/.env
+      - ${API_ENV_FILE:-./apps/api/.env}
     depends_on:
       - api
       - plane-db
@@ -91,7 +91,7 @@ services:
     restart: no
     command: ./bin/docker-entrypoint-migrator.sh
     env_file:
-      - ./apps/api/.env
+      - ${API_ENV_FILE:-./apps/api/.env}
     depends_on:
       - plane-db
       - plane-redis
@@ -113,7 +113,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     env_file:
-      - .env
+      - ${COMPOSE_ENV_FILE:-.env}
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_DB: ${POSTGRES_DB}
@@ -132,7 +132,7 @@ services:
     image: rabbitmq:3.13.6-management-alpine
     restart: always
     env_file:
-      - .env
+      - ${COMPOSE_ENV_FILE:-.env}
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
