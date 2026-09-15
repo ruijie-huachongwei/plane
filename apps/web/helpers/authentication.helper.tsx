@@ -98,6 +98,10 @@ export enum EAuthenticationErrorCodes {
   ADMIN_USER_ALREADY_EXIST = "5180",
   ADMIN_USER_DOES_NOT_EXIST = "5185",
   ADMIN_USER_DEACTIVATED = "5190",
+  // CAS
+  CAS_NOT_CONFIGURED = "5200",
+  CAS_AUTHENTICATION_FAILED = "5205",
+  CAS_ACCOUNT_CONFLICT = "5210",
   // Rate limit
   RATE_LIMIT_EXCEEDED = "5900",
 }
@@ -288,6 +292,20 @@ const errorCodeMessages: {
     message: () => `GitLab OAuth provider error. Please try again.`,
   },
 
+  // CAS
+  [EAuthenticationErrorCodes.CAS_NOT_CONFIGURED]: {
+    title: `Ruijie 单点登录 not configured`,
+    message: () => `Ruijie 单点登录 is not configured. Please contact your administrator.`,
+  },
+  [EAuthenticationErrorCodes.CAS_AUTHENTICATION_FAILED]: {
+    title: `Ruijie 单点登录 authentication failed`,
+    message: () => `Ruijie 单点登录 authentication failed. Please try again.`,
+  },
+  [EAuthenticationErrorCodes.CAS_ACCOUNT_CONFLICT]: {
+    title: `Ruijie 单点登录 account conflict`,
+    message: () => `This Ruijie account cannot be linked automatically. Please contact your administrator.`,
+  },
+
   // Reset Password
   [EAuthenticationErrorCodes.INVALID_PASSWORD_TOKEN]: {
     title: `Invalid password token`,
@@ -414,6 +432,9 @@ export const authErrorHandler = (errorCode: EAuthenticationErrorCodes, email?: s
     EAuthenticationErrorCodes.GOOGLE_OAUTH_PROVIDER_ERROR,
     EAuthenticationErrorCodes.GITHUB_OAUTH_PROVIDER_ERROR,
     EAuthenticationErrorCodes.GITLAB_OAUTH_PROVIDER_ERROR,
+    EAuthenticationErrorCodes.CAS_NOT_CONFIGURED,
+    EAuthenticationErrorCodes.CAS_AUTHENTICATION_FAILED,
+    EAuthenticationErrorCodes.CAS_ACCOUNT_CONFLICT,
     EAuthenticationErrorCodes.INVALID_PASSWORD_TOKEN,
     EAuthenticationErrorCodes.EXPIRED_PASSWORD_TOKEN,
     EAuthenticationErrorCodes.INCORRECT_OLD_PASSWORD,

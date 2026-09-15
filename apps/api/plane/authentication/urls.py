@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # See the LICENSE file for details.
 
-from django.urls import path
+from django.urls import include, path
 
 from .views import (
     CSRFTokenEndpoint,
@@ -47,6 +47,8 @@ from .views import (
 )
 
 urlpatterns = [
+    # CAS
+    path("cas/", include("plane.authentication.urls_cas")),
     # credentials
     path("sign-in/", SignInAuthEndpoint.as_view(), name="sign-in"),
     path("sign-up/", SignUpAuthEndpoint.as_view(), name="sign-up"),

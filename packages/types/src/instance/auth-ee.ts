@@ -4,6 +4,6 @@
  * See the LICENSE file for details.
  */
 
-export type TExtendedLoginMediums = never;
+export type TExtendedLoginMediums = "cas";
 
 export type TExtendedInstanceAuthenticationModeKeys = never;
