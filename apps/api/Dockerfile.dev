@@ -6,7 +6,11 @@ ENV PYTHONUNBUFFERED 1
 ENV PIP_DISABLE_PIP_VERSION_CHECK=1 
 ENV INSTANCE_CHANGELOG_URL https://sites.plane.so/pages/691ef037bcfe416a902e48cb55f59891/
 
-RUN apk --no-cache add \
+ARG APK_REPOSITORY_HOST=dl-cdn.alpinelinux.org
+ARG PIP_INDEX_URL=https://pypi.org/simple
+
+RUN sed -i "s#dl-cdn.alpinelinux.org#${APK_REPOSITORY_HOST}#g" /etc/apk/repositories && \
+    apk --no-cache add \
     "bash~=5.2" \
     "libpq" \
     "libxslt" \
@@ -29,7 +33,7 @@ COPY requirements.txt ./requirements.txt
 ADD requirements ./requirements
 
 # Install the local development settings
-RUN pip install -r requirements/local.txt --compile --no-cache-dir
+RUN pip install --index-url "${PIP_INDEX_URL}" -r requirements/local.txt --compile --no-cache-dir
 
 
 COPY . .
