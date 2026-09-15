@@ -1,0 +1,221 @@
+apps/api/plane/authentication/urls.py
+  s_87b8c6f7c2cb9b::t_e03275f97ea823 5,50-51
+packages/types/src/instance/auth-ee.ts
+  s_87b8c6f7c2cb9b::t_73556dcfc012ef 7
+apps/web/core/hooks/oauth/extended.tsx
+  s_87b8c6f7c2cb9b::t_73556dcfc012ef 7-8,10,12-18,21-24,26-35
+  s_87b8c6f7c2cb9b::t_94782da988a77e 25
+apps/api/plane/authentication/provider/cas.py
+  s_87b8c6f7c2cb9b::t_7f92b7d14c6895 1-31,33,48-55,57,59-97,99-104,111-119,128-131,134-141,143-178,180,188-193
+  s_87b8c6f7c2cb9b::t_efab70e0f814f6 120-127,194
+  s_87b8c6f7c2cb9b::t_ebdb8008c1f188 32,34-42,56,58,98,132-133,142,179,181-187
+  s_87b8c6f7c2cb9b::t_e594902b2000c7 105-110
+  s_87b8c6f7c2cb9b::t_41a08386b69e63 43-47
+apps/api/plane/authentication/urls_cas.py
+  s_87b8c6f7c2cb9b::t_e03275f97ea823 1-11
+  s_87b8c6f7c2cb9b::t_efab70e0f814f6 12
+apps/api/plane/license/api/views/instance.py
+  s_87b8c6f7c2cb9b::t_73556dcfc012ef 58,95-98,131
+apps/api/docs/cas-sso.md
+  s_87b8c6f7c2cb9b::t_99cdf80c2641dd 1-65
+packages/constants/src/auth/extended.ts
+  s_87b8c6f7c2cb9b::t_bd284894cab0ce 9,11
+  s_87b8c6f7c2cb9b::t_94782da988a77e 10
+apps/api/plane/tests/contract/app/test_cas_authentication.py
+  s_87b8c6f7c2cb9b::t_99cdf80c2641dd 76-83
+  s_87b8c6f7c2cb9b::t_23714771e9406a 1-9,11-75,84-120,122-149,218-253
+  s_87b8c6f7c2cb9b::t_ebdb8008c1f188 121,201-217
+  s_87b8c6f7c2cb9b::t_efab70e0f814f6 254
+  s_87b8c6f7c2cb9b::t_e594902b2000c7 10,150-200
+apps/api/plane/authentication/adapter/error.py
+  s_87b8c6f7c2cb9b::t_7f92b7d14c6895 72-75
+apps/web/helpers/authentication.helper.tsx
+  s_87b8c6f7c2cb9b::t_73556dcfc012ef 101-104,295-296,299-300,303-304,307-308,435-437
+  s_87b8c6f7c2cb9b::t_94782da988a77e 297-298,301-302,305-306
+apps/api/plane/authentication/views/app/cas.py
+  s_87b8c6f7c2cb9b::t_99cdf80c2641dd 63
+  s_87b8c6f7c2cb9b::t_e03275f97ea823 1-44,56-58,61,64-75,77-118,121-150
+  s_87b8c6f7c2cb9b::t_e594902b2000c7 119-120
+  s_87b8c6f7c2cb9b::t_efab70e0f814f6 151
+  s_87b8c6f7c2cb9b::t_ebdb8008c1f188 45-55,59-60,62,76
+packages/types/src/instance/base.ts
+  s_87b8c6f7c2cb9b::t_73556dcfc012ef 54
+---
+{
+  "schema_version": "authorship/3.1.0",
+  "git_ai_version": "2.2.51",
+  "base_commit_sha": "02e4325999a0eb1e025aa7e22b17d8d985826112",
+  "prompts": {
+    "s_87b8c6f7c2cb9b::t_23714771e9406a": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "e2ac6531-3000-4925-a635-731b2e9c9b6f",
+        "model": "unknown"
+      },
+      "human_author": "huachongwei <huachongwei@ruijie.com.cn>",
+      "messages": [],
+      "total_additions": 780,
+      "total_deletions": 46,
+      "accepted_lines": 175,
+      "overriden_lines": 0
+    },
+    "s_87b8c6f7c2cb9b::t_41a08386b69e63": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "e2ac6531-3000-4925-a635-731b2e9c9b6f",
+        "model": "unknown"
+      },
+      "human_author": "huachongwei <huachongwei@ruijie.com.cn>",
+      "messages": [],
+      "total_additions": 780,
+      "total_deletions": 46,
+      "accepted_lines": 5,
+      "overriden_lines": 0
+    },
+    "s_87b8c6f7c2cb9b::t_5a78cfc48e0ec2": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "e2ac6531-3000-4925-a635-731b2e9c9b6f",
+        "model": "unknown"
+      },
+      "human_author": "huachongwei <huachongwei@ruijie.com.cn>",
+      "messages": [],
+      "total_additions": 780,
+      "total_deletions": 46,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    },
+    "s_87b8c6f7c2cb9b::t_73556dcfc012ef": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "e2ac6531-3000-4925-a635-731b2e9c9b6f",
+        "model": "unknown"
+      },
+      "human_author": "huachongwei <huachongwei@ruijie.com.cn>",
+      "messages": [],
+      "total_additions": 780,
+      "total_deletions": 46,
+      "accepted_lines": 47,
+      "overriden_lines": 0
+    },
+    "s_87b8c6f7c2cb9b::t_7f92b7d14c6895": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "e2ac6531-3000-4925-a635-731b2e9c9b6f",
+        "model": "unknown"
+      },
+      "human_author": "huachongwei <huachongwei@ruijie.com.cn>",
+      "messages": [],
+      "total_additions": 780,
+      "total_deletions": 46,
+      "accepted_lines": 154,
+      "overriden_lines": 0
+    },
+    "s_87b8c6f7c2cb9b::t_94782da988a77e": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "e2ac6531-3000-4925-a635-731b2e9c9b6f",
+        "model": "unknown"
+      },
+      "human_author": "huachongwei <huachongwei@ruijie.com.cn>",
+      "messages": [],
+      "total_additions": 780,
+      "total_deletions": 46,
+      "accepted_lines": 8,
+      "overriden_lines": 0
+    },
+    "s_87b8c6f7c2cb9b::t_99cdf80c2641dd": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "e2ac6531-3000-4925-a635-731b2e9c9b6f",
+        "model": "unknown"
+      },
+      "human_author": "huachongwei <huachongwei@ruijie.com.cn>",
+      "messages": [],
+      "total_additions": 780,
+      "total_deletions": 46,
+      "accepted_lines": 74,
+      "overriden_lines": 0
+    },
+    "s_87b8c6f7c2cb9b::t_bd284894cab0ce": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "e2ac6531-3000-4925-a635-731b2e9c9b6f",
+        "model": "unknown"
+      },
+      "human_author": "huachongwei <huachongwei@ruijie.com.cn>",
+      "messages": [],
+      "total_additions": 780,
+      "total_deletions": 46,
+      "accepted_lines": 10,
+      "overriden_lines": 0
+    },
+    "s_87b8c6f7c2cb9b::t_e03275f97ea823": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "e2ac6531-3000-4925-a635-731b2e9c9b6f",
+        "model": "unknown"
+      },
+      "human_author": "huachongwei <huachongwei@ruijie.com.cn>",
+      "messages": [],
+      "total_additions": 780,
+      "total_deletions": 46,
+      "accepted_lines": 146,
+      "overriden_lines": 0
+    },
+    "s_87b8c6f7c2cb9b::t_e594902b2000c7": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "e2ac6531-3000-4925-a635-731b2e9c9b6f",
+        "model": "unknown"
+      },
+      "human_author": "huachongwei <huachongwei@ruijie.com.cn>",
+      "messages": [],
+      "total_additions": 780,
+      "total_deletions": 46,
+      "accepted_lines": 60,
+      "overriden_lines": 0
+    },
+    "s_87b8c6f7c2cb9b::t_ebdb8008c1f188": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "e2ac6531-3000-4925-a635-731b2e9c9b6f",
+        "model": "unknown"
+      },
+      "human_author": "huachongwei <huachongwei@ruijie.com.cn>",
+      "messages": [],
+      "total_additions": 780,
+      "total_deletions": 46,
+      "accepted_lines": 57,
+      "overriden_lines": 0
+    },
+    "s_87b8c6f7c2cb9b::t_efab70e0f814f6": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "e2ac6531-3000-4925-a635-731b2e9c9b6f",
+        "model": "unknown"
+      },
+      "human_author": "huachongwei <huachongwei@ruijie.com.cn>",
+      "messages": [],
+      "total_additions": 780,
+      "total_deletions": 46,
+      "accepted_lines": 12,
+      "overriden_lines": 0
+    }
+  },
+  "humans": {
+    "h_27ffee2e0458f3": {
+      "author": "huachongwei <huachongwei@ruijie.com.cn>"
+    }
+  },
+  "sessions": {
+    "s_87b8c6f7c2cb9b": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "e2ac6531-3000-4925-a635-731b2e9c9b6f",
+        "model": "unknown"
+      },
+      "human_author": "huachongwei <huachongwei@ruijie.com.cn>"
+    }
+  }
+}
