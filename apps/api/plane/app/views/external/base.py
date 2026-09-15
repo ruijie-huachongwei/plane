@@ -41,8 +41,8 @@ class LLMProvider:
 
 class OpenAIProvider(LLMProvider):
     name = "OpenAI"
-    models = ["gpt-3.5-turbo", "gpt-4o-mini", "gpt-4o", "o1-mini", "o1-preview"]
-    default_model = "gpt-4o-mini"
+    models = ["gpt-3.5-turbo", "gpt-4o-mini", "qwen3.8-max", "origin-deepseek-v4-1-flash", "ali-deepseek-v4-pro"]
+    default_model = "ali-deepseek-v4-pro"
 
 
 class AnthropicProvider(LLMProvider):
