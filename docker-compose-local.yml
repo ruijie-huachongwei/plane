@@ -69,6 +69,8 @@ services:
       dockerfile: Dockerfile.dev
       args:
         DOCKER_BUILDKIT: 1
+        APK_REPOSITORY_HOST: ${APK_REPOSITORY_HOST:-mirrors.aliyun.com}
+        PIP_INDEX_URL: ${PIP_INDEX_URL:-https://mirrors.aliyun.com/pypi/simple}
     restart: unless-stopped
     networks:
       - dev_env
@@ -90,6 +92,8 @@ services:
       dockerfile: Dockerfile.dev
       args:
         DOCKER_BUILDKIT: 1
+        APK_REPOSITORY_HOST: ${APK_REPOSITORY_HOST:-mirrors.aliyun.com}
+        PIP_INDEX_URL: ${PIP_INDEX_URL:-https://mirrors.aliyun.com/pypi/simple}
     restart: unless-stopped
     networks:
       - dev_env
@@ -109,6 +113,8 @@ services:
       dockerfile: Dockerfile.dev
       args:
         DOCKER_BUILDKIT: 1
+        APK_REPOSITORY_HOST: ${APK_REPOSITORY_HOST:-mirrors.aliyun.com}
+        PIP_INDEX_URL: ${PIP_INDEX_URL:-https://mirrors.aliyun.com/pypi/simple}
     restart: unless-stopped
     networks:
       - dev_env
@@ -128,6 +134,8 @@ services:
       dockerfile: Dockerfile.dev
       args:
         DOCKER_BUILDKIT: 1
+        APK_REPOSITORY_HOST: ${APK_REPOSITORY_HOST:-mirrors.aliyun.com}
+        PIP_INDEX_URL: ${PIP_INDEX_URL:-https://mirrors.aliyun.com/pypi/simple}
     restart: "no"
     networks:
       - dev_env
