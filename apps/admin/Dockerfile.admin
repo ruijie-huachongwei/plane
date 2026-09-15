@@ -84,8 +84,10 @@ RUN pnpm turbo run build --filter=admin
 
 FROM caddy:2.11.4-builder-alpine AS caddy-builder
 
-ARG GOPROXY=https://proxy.golang.org,direct
+ARG GOPROXY=https://repo.huaweicloud.com/repository/goproxy|https://proxy.golang.org|direct
+ARG GOSUMDB=sum.golang.org
 ENV GOPROXY=$GOPROXY
+ENV GOSUMDB=$GOSUMDB
 
 RUN XCADDY_SKIP_CLEANUP=1 xcaddy build \
     --with github.com/mholt/caddy-ratelimit

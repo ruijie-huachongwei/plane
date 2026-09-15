@@ -51,7 +51,8 @@ x-api-environment: &api-environment
 x-build-mirrors: &build-mirrors
   APK_REPOSITORY_HOST: ${APK_REPOSITORY_HOST:-repo.huaweicloud.com}
   NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmmirror.com}
-  GOPROXY: ${GOPROXY:-https://goproxy.cn,direct}
+  GOPROXY: ${GOPROXY:-https://repo.huaweicloud.com/repository/goproxy|https://proxy.golang.org|direct}
+  GOSUMDB: ${GOSUMDB:-sum.golang.org https://sum.golang.google.cn}
 
 x-frontend-build-args: &frontend-build-args
   <<: *build-mirrors
