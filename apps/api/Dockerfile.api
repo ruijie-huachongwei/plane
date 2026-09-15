@@ -6,11 +6,17 @@ ENV PYTHONUNBUFFERED=1
 ENV PIP_DISABLE_PIP_VERSION_CHECK=1 
 ENV INSTANCE_CHANGELOG_URL=https://sites.plane.so/pages/691ef037bcfe416a902e48cb55f59891/
 
+ARG APK_REPOSITORY_HOST=dl-cdn.alpinelinux.org
+ARG PIP_INDEX_URL=https://pypi.org/simple
+
 # OS security updates. --available forces reinstall from the current repos;
 # bump APK_SECURITY_PATCH to bust buildx's cached layer (keyed on this command
 # string), otherwise a rebuild silently re-ships the old packages.
 ARG APK_SECURITY_PATCH=2026-09-07
-RUN echo "apk-security-patch ${APK_SECURITY_PATCH}" && apk update && apk upgrade --available
+RUN sed -i "s#dl-cdn.alpinelinux.org#${APK_REPOSITORY_HOST}#g" /etc/apk/repositories && \
+    echo "apk-security-patch ${APK_SECURITY_PATCH}" && \
+    apk update && \
+    apk upgrade --available
 
 WORKDIR /code
 
@@ -35,7 +41,7 @@ RUN apk add --no-cache --virtual .build-deps \
     "libc-dev" \
     "linux-headers" \
     && \
-    pip install -r requirements.txt --compile --no-cache-dir \
+    pip install --index-url "${PIP_INDEX_URL}" -r requirements.txt --compile --no-cache-dir \
     && \
     apk del .build-deps \
     && \

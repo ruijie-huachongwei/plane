@@ -48,7 +48,13 @@ x-api-environment: &api-environment
   GUNICORN_WORKERS: ${GUNICORN_WORKERS:-2}
   API_KEY_RATE_LIMIT: ${API_KEY_RATE_LIMIT:-60/minute}
 
+x-build-mirrors: &build-mirrors
+  APK_REPOSITORY_HOST: ${APK_REPOSITORY_HOST:-repo.huaweicloud.com}
+  NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmmirror.com}
+  GOPROXY: ${GOPROXY:-https://goproxy.cn,direct}
+
 x-frontend-build-args: &frontend-build-args
+  <<: *build-mirrors
   VITE_API_BASE_URL: ${PUBLIC_URL:?PUBLIC_URL is required}
   VITE_WEB_BASE_URL: ${PUBLIC_URL:?PUBLIC_URL is required}
   VITE_ADMIN_BASE_URL: ${PUBLIC_URL:?PUBLIC_URL is required}
@@ -79,6 +85,10 @@ services:
         VITE_WEB_BASE_PATH: ""
 
   api:
+    build:
+      args:
+        APK_REPOSITORY_HOST: ${APK_REPOSITORY_HOST:-repo.huaweicloud.com}
+        PIP_INDEX_URL: ${PIP_INDEX_URL:-https://repo.huaweicloud.com/repository/pypi/simple}
     environment:
       <<: *api-environment
     depends_on:
@@ -99,6 +109,9 @@ services:
       <<: *api-environment
 
   live:
+    build:
+      args:
+        <<: *build-mirrors
     environment:
       PORT: "3000"
       API_BASE_URL: http://api:8000
@@ -117,6 +130,9 @@ services:
       - minio
 
   proxy:
+    build:
+      args:
+        <<: *build-mirrors
     environment:
       APP_DOMAIN: ${APP_DOMAIN:?APP_DOMAIN is required}
       FILE_SIZE_LIMIT: ${FILE_SIZE_LIMIT:-5242880}

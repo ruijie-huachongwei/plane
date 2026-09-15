@@ -1,5 +1,8 @@
 FROM caddy:2.11.4-builder-alpine AS caddy-builder
 
+ARG GOPROXY=https://proxy.golang.org,direct
+ENV GOPROXY=$GOPROXY
+
 # grpc and otel move together: grpc >= v1.83.0 requires otel v1.44.0, and xcaddy
 # resolves these --with pins in one `go get`, so a stale otel pin makes go walk
 # grpc backwards until it finds one that fits (silently, with a zero exit) --
@@ -38,7 +41,12 @@ FROM caddy:2.11.4-alpine
 # bump APK_SECURITY_PATCH to bust buildx's cached layer (keyed on this command
 # string), otherwise a rebuild silently re-ships the old packages.
 ARG APK_SECURITY_PATCH=2026-09-07
-RUN echo "apk-security-patch ${APK_SECURITY_PATCH}" && apk update && apk upgrade --no-cache --available && apk add --no-cache nss-tools bash curl
+ARG APK_REPOSITORY_HOST=dl-cdn.alpinelinux.org
+RUN sed -i "s#dl-cdn.alpinelinux.org#${APK_REPOSITORY_HOST}#g" /etc/apk/repositories && \
+    echo "apk-security-patch ${APK_SECURITY_PATCH}" && \
+    apk update && \
+    apk upgrade --no-cache --available && \
+    apk add --no-cache nss-tools bash curl
 
 COPY --from=caddy-builder /usr/bin/caddy /usr/bin/caddy
 
