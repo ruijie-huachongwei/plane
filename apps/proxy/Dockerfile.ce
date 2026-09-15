@@ -7,29 +7,24 @@ ENV GOSUMDB=$GOSUMDB
 ENV GONOPROXY=none
 ENV GOPRIVATE=
 
-# grpc and otel move together: grpc >= v1.83.0 requires otel v1.44.0, and xcaddy
-# resolves these --with pins in one `go get`, so a stale otel pin makes go walk
-# grpc backwards until it finds one that fits (silently, with a zero exit) --
-# it lands on the v1.83.0-dev pre-release and the build still succeeds. Bump the
-# otel pair in lockstep with grpc, and confirm with `go version -m` afterwards.
 RUN go env GOPROXY GONOPROXY GOPRIVATE GOSUMDB && \
     XCADDY_SKIP_CLEANUP=1 xcaddy build \
         --with github.com/caddy-dns/cloudflare@v0.2.1 \
         --with github.com/caddy-dns/digitalocean@04bde2867106aa1b44c2f9da41a285fa02e629c5 \
-        --with github.com/mholt/caddy-l4@6faae83b167fda94e62b686be5cbeb9b3f8fe002 \
-        --with github.com/go-jose/go-jose/v3@v3.0.5 \
-        --with github.com/go-jose/go-jose/v4@v4.1.4 \
-        --with google.golang.org/grpc@v1.83.1 \
-        --with go.opentelemetry.io/otel@v1.44.0 \
-        --with go.opentelemetry.io/otel/sdk@v1.44.0
+        --with github.com/mholt/caddy-l4@6faae83b167fda94e62b686be5cbeb9b3f8fe002
 
-# Caddy's own go.mod pins x/crypto, x/net and x/text at versions with open CVEs;
-# xcaddy preserved its build dir above, so upgrade them there and rebuild.
-# x/crypto v0.55.0 requires x/net v0.57.0 and x/text v0.41.0, hence those floors.
+# `--with` adds a blank import and is only valid for Caddy plugins. Upgrade
+# vulnerable transitive modules in xcaddy's generated module before rebuilding.
 RUN cd "$(find /tmp -maxdepth 1 -name 'buildenv_*' -type d | head -1)" && \
-    go get golang.org/x/crypto@v0.55.0 && \
-    go get golang.org/x/net@v0.57.0 && \
-    go get golang.org/x/text@v0.41.0 && \
+    go get \
+        github.com/go-jose/go-jose/v3@v3.0.5 \
+        github.com/go-jose/go-jose/v4@v4.1.4 \
+        google.golang.org/grpc@v1.83.1 \
+        go.opentelemetry.io/otel@v1.44.0 \
+        go.opentelemetry.io/otel/sdk/trace@v1.44.0 \
+        golang.org/x/crypto@v0.55.0 \
+        golang.org/x/net@v0.57.0 \
+        golang.org/x/text@v0.41.0 && \
     go mod tidy && \
     go build -o /usr/bin/caddy -ldflags "-w -s" -trimpath -tags nobadger,nomysql,nopgx .
 

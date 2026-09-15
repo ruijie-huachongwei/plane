@@ -22,7 +22,7 @@ PostgreSQL, Valkey, RabbitMQ, API, workers, and Live remain private on the Docke
    https://plane-test.ruijie.com.cn/auth/cas/callback/
    ```
 
-Because the domain resolves to an RFC1918 address, public HTTP-based ACME validation normally cannot reach it. Use a certificate issued by the company CA, or terminate TLS at an existing corporate gateway. The included Caddy configuration expects a company-issued certificate on this server.
+Because the domain resolves to an RFC1918 address, public HTTP-based ACME validation normally cannot reach it. Use a certificate issued by the company CA, or terminate TLS at an existing corporate gateway. The included Nginx configuration expects a company-issued certificate on this server.
 
 ## Install the certificate
 
@@ -125,6 +125,8 @@ If another reverse proxy already owns port 80 or 443, stop it or configure that 
 
 Build and migrate in controlled stages:
 
+The Ruijie proxy, Web, and Admin images use Nginx and do not compile Caddy or any Go modules.
+
 ```bash
 DOCKER_BUILDKIT=1 docker compose -p plane \
   --env-file /data/plane/deployments/ruijie/.env \
@@ -136,7 +138,7 @@ docker compose -p plane \
   --env-file /data/plane/deployments/ruijie/.env \
   -f /data/plane/docker-compose.yml \
   -f /data/plane/deployments/ruijie/docker-compose.yml \
-  run --rm --no-deps proxy caddy validate --config /etc/caddy/Caddyfile
+  run --rm --no-deps proxy nginx -t
 
 docker compose -p plane \
   --env-file /data/plane/deployments/ruijie/.env \
@@ -230,12 +232,12 @@ docker compose -p plane \
   up -d --remove-orphans
 ```
 
-Renew the company certificate before expiry, replace the two files under `/etc/plane/certs`, and reload Caddy with:
+Renew the company certificate before expiry, replace the two files under `/etc/plane/certs`, and reload Nginx with:
 
 ```bash
 docker compose -p plane \
   --env-file /data/plane/deployments/ruijie/.env \
   -f /data/plane/docker-compose.yml \
   -f /data/plane/deployments/ruijie/docker-compose.yml \
-  exec proxy caddy reload --config /etc/caddy/Caddyfile
+  exec proxy nginx -s reload
 ```

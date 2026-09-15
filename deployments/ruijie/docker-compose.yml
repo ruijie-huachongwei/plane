@@ -51,8 +51,6 @@ x-api-environment: &api-environment
 x-build-mirrors: &build-mirrors
   APK_REPOSITORY_HOST: ${APK_REPOSITORY_HOST:-repo.huaweicloud.com}
   NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmmirror.com}
-  GOPROXY: https://repo.huaweicloud.com/repository/goproxy|https://proxy.golang.com.cn
-  GOSUMDB: sum.golang.org https://sum.golang.google.cn
 
 x-frontend-build-args: &frontend-build-args
   <<: *build-mirrors
@@ -132,23 +130,18 @@ services:
 
   proxy:
     build:
-      args:
-        <<: *build-mirrors
+      context: .
+      dockerfile: deployments/ruijie/Dockerfile.proxy
     environment:
       APP_DOMAIN: ${APP_DOMAIN:?APP_DOMAIN is required}
       FILE_SIZE_LIMIT: ${FILE_SIZE_LIMIT:-5242880}
+      NGINX_ENVSUBST_FILTER: APP_DOMAIN|FILE_SIZE_LIMIT
     volumes:
-      - ./deployments/ruijie/Caddyfile:/etc/caddy/Caddyfile:ro
-      - ${TLS_CERT_DIR:?TLS_CERT_DIR is required}:/etc/caddy/certs:ro
-      - proxy_config:/config
-      - proxy_data:/data
+      - ./deployments/ruijie/nginx.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - ${TLS_CERT_DIR:?TLS_CERT_DIR is required}:/etc/nginx/certs:ro
     depends_on:
       - web
       - api
       - space
       - admin
       - live
-
-volumes:
-  proxy_config:
-  proxy_data:
