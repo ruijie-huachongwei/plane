@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react";
 import { useSearchParams } from "next/navigation";
 // plane imports
@@ -39,6 +39,7 @@ export const AuthRoot = observer(function AuthRoot(props: TAuthRoot) {
   const invitation_id = searchParams.get("invitation_id");
   const workspaceSlug = searchParams.get("slug");
   const error_code = searchParams.get("error_code");
+  const shouldAutoLogin = searchParams.get("autologin") === "true";
   // props
   const { authMode: currentAuthMode } = props;
   // states
@@ -46,6 +47,7 @@ export const AuthRoot = observer(function AuthRoot(props: TAuthRoot) {
   const [authStep, setAuthStep] = useState<EAuthSteps>(EAuthSteps.EMAIL);
   const [email, setEmail] = useState(emailParam ? emailParam.toString() : "");
   const [errorInfo, setErrorInfo] = useState<TAuthErrorInfo | undefined>(undefined);
+  const hasAutoLoginStarted = useRef(false);
   // store hooks
   const { config } = useInstance();
   // derived values
@@ -57,6 +59,16 @@ export const AuthRoot = observer(function AuthRoot(props: TAuthRoot) {
   useEffect(() => {
     if (!authMode && currentAuthMode) setAuthMode(currentAuthMode);
   }, [currentAuthMode, authMode]);
+
+  useEffect(() => {
+    if (!shouldAutoLogin || currentAuthMode !== EAuthModes.SIGN_IN || error_code || hasAutoLoginStarted.current) return;
+
+    const casOAuthOption = oAuthOptions.find((option) => option.id === "cas" && option.enabled);
+    if (!casOAuthOption) return;
+
+    hasAutoLoginStarted.current = true;
+    casOAuthOption.onClick();
+  }, [currentAuthMode, error_code, oAuthOptions, shouldAutoLogin]);
 
   useEffect(() => {
     if (error_code && authMode) {
@@ -143,10 +155,10 @@ export const AuthRoot = observer(function AuthRoot(props: TAuthRoot) {
           authStep={authStep}
           authMode={authMode}
           email={email}
-          setEmail={(email) => setEmail(email)}
-          setAuthMode={(authMode) => setAuthMode(authMode)}
-          setAuthStep={(authStep) => setAuthStep(authStep)}
-          setErrorInfo={(errorInfo) => setErrorInfo(errorInfo)}
+          setEmail={(nextEmail) => setEmail(nextEmail)}
+          setAuthMode={(nextAuthMode) => setAuthMode(nextAuthMode)}
+          setAuthStep={(nextAuthStep) => setAuthStep(nextAuthStep)}
+          setErrorInfo={(nextErrorInfo) => setErrorInfo(nextErrorInfo)}
           currentAuthMode={currentAuthMode}
         />
       )}
