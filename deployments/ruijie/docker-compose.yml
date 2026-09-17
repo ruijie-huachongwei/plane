@@ -47,6 +47,8 @@ x-api-environment: &api-environment
   OPENAI_BASE_URL: ${OPENAI_BASE_URL:-https://api.openai.com/v1}
   GUNICORN_WORKERS: ${GUNICORN_WORKERS:-2}
   API_KEY_RATE_LIMIT: ${API_KEY_RATE_LIMIT:-60/minute}
+  WEBHOOK_ALLOWED_IPS: ${WEBHOOK_ALLOWED_IPS:-}
+  WEBHOOK_ALLOWED_HOSTS: ${WEBHOOK_ALLOWED_HOSTS:-}
 
 x-build-mirrors: &build-mirrors
   APK_REPOSITORY_HOST: ${APK_REPOSITORY_HOST:-repo.huaweicloud.com}
@@ -123,6 +125,10 @@ services:
     depends_on:
       - api
       - plane-redis
+
+  plane-db:
+    ports:
+      - "${POSTGRES_BIND_ADDRESS:-127.0.0.1}:${POSTGRES_HOST_PORT:-5432}:5432"
 
   plane-minio:
     profiles:

@@ -8,7 +8,7 @@ This deployment builds the current source tree and serves every browser-facing c
 - API and authentication: `/api/` and `/auth/`
 - Realtime collaboration: `/live/`
 
-PostgreSQL, Valkey, RabbitMQ, API, workers, and Live remain private on the Docker network. Only ports 80 and 443 are published. Alibaba OSS is used directly through presigned URLs, so MinIO is disabled.
+Valkey, RabbitMQ, API, workers, and Live remain private on the Docker network. PostgreSQL is published on the host loopback interface at `127.0.0.1:5432` by default, while ports 80 and 443 serve the web application. Alibaba OSS is used directly through presigned URLs, so MinIO is disabled.
 
 ## Prerequisites
 
@@ -56,6 +56,23 @@ python3 -c 'from secrets import token_urlsafe; print(token_urlsafe(64))'
 ```
 
 Use the generated values for the PostgreSQL password, RabbitMQ password, Live secret, and Django secret. Set the real OSS credentials, bucket, and Manager shared secret directly on the server. Never commit `deployments/ruijie/.env`.
+
+The PostgreSQL host mapping can be customized without changing Compose:
+
+```dotenv
+POSTGRES_BIND_ADDRESS=127.0.0.1
+POSTGRES_HOST_PORT=5432
+```
+
+For access from another machine, bind to the server's specific private-network address and restrict that port to trusted clients with the host firewall. Avoid `0.0.0.0` unless network-level access controls are already in place.
+
+For a trusted webhook receiver that resolves to an internal address, allow its exact hostname in the deployment environment:
+
+```dotenv
+WEBHOOK_ALLOWED_HOSTS=tianshu-test.ruijie.com.cn
+```
+
+Do not allow the entire `172.16.0.0/12` range. If hostname-based trust is not suitable, use the narrowest stable address instead, for example `WEBHOOK_ALLOWED_IPS=172.16.3.82/32`. Recreate both `api` and `worker` after changing either setting; URL validation runs in the API and delivery runs in the worker.
 
 For an existing Plane database, retain the current PostgreSQL password. Changing only the environment value does not change the password stored in an initialized PostgreSQL volume. The same applies to an existing RabbitMQ volume.
 
